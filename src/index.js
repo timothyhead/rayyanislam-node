@@ -2,7 +2,7 @@ const app = require('./app');
 
 import express, { json } from 'express';
 import bodyParser from 'body-parser';
-// const { urlencoded } = pkg;
+
 import cors from 'cors';
 import http from 'http';
 import formidable from 'formidable';
@@ -26,29 +26,19 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   next();
-// });
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Headers", "Origin , Content-Type, application/json");
-//   next();
-// });
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json())
-// app.use(cors())
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "localhost:3000/rayyanisalm/"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+;
+//app.use(bodyParser.urlencoded({ extended: false }));
+
+
+
+
+app.use(bodyParser.json({limit: '50mb'}));
+
 
 
 app.post("/storedMenu/", function(req, res, next) {
 
-   console.log(req.body?.menu, "ZXCVBNM");
 
-  
   
   const menuJson =  JSON.stringify(req.body.menu)
   
@@ -78,9 +68,23 @@ app.post("/storedMenu/", function(req, res, next) {
       });
     })
     
-  app.get("/hello", function(req, res, next) {
-    console.log("hello ok");
-  })
+app.post("/id", function(req, res) {
+  console.log(req.body?.id, "ZXCVBNM");
+  const id =  JSON.stringify(req.body.id)
+  
+  
+  
+   appendFile("id.json", menuJson,   {
+     encoding: "utf8",
+     flag: "w",
+     mode: 0o666
+   }  , function(err) {
+     if(err) {
+         return console.log(err, "error writing to storedMenu.json");
+     }
+     console.log("The storedMenu file was saved!");
+  });
+})
 
 
 app.listen(port, () => {
